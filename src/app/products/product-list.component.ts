@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {IProduct} from './product';
+import {ProductService} from './product.service';
 
-
-// @ts-ignore
 @Component({
   selector: 'app-products',
   templateUrl: './product-list.component.html',
@@ -15,6 +14,7 @@ export class ProductListComponent implements OnInit {
   imageMargin = 2;
   showImage = false;
   filteredProducts: IProduct[];
+  products: IProduct[] = [];
 
   _listFilter: string;
   get listFilter(): string {
@@ -26,32 +26,12 @@ export class ProductListComponent implements OnInit {
     this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
   }
 
-  products: IProduct[] = [
-    {
-      productId: 1,
-      productName: 'Grabie',
-      productCode: 'GDN-0011',
-      releaseDate: '15 Marzec 2020',
-      description: 'Leaf rake with 48-inch wooden handle.',
-      price: 19.95,
-      starRating: 3.2,
-      imageUrl: 'assets/images/leaf_rake.jpg'
-    },
-    {
-      productId: 2,
-      productName: 'Taczka ogrodowa',
-      productCode: 'GDN-0023',
-      releaseDate: '15 Marzec 2020',
-      description: '15 gallon capacity rolling garden cart',
-      price: 32.99,
-      starRating: 4.2,
-      imageUrl: 'assets/images/garden_cart.jpg'
-    }
-  ];
+  constructor(private productService: ProductService) {
+  }
 
-  constructor() {
+  ngOnInit(): void {
+    this.products = this.productService.getProducts();
     this.filteredProducts = this.products;
-    this.listFilter = 'taczka';
   }
 
   performFilter(filterBy: string): IProduct[] {
@@ -62,10 +42,6 @@ export class ProductListComponent implements OnInit {
 
   toggleImage(): void {
     this.showImage = !this.showImage;
-  }
-
-  ngOnInit(): void {
-    console.log('OnInit metod');
   }
 
   onRatingClicked(message: string): void {
