@@ -51,6 +51,5 @@ export class ProductListComponent implements OnInit {
       },
       error: err => this.errorMessage = err
     });
-
   }
 }

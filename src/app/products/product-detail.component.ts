@@ -1,38 +1,39 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Route, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {IProduct} from './product';
+import { IProduct } from './product';
+import { ProductService } from './product.service';
 
 @Component({
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
-  pageTitle = 'Opis produktu';
-  product: IProduct;
+  pageTitle = 'Opis Produktu';
+  errorMessage = '';
+  product: IProduct | undefined;
 
   constructor(private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private productService: ProductService) {
   }
 
   ngOnInit() {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.pageTitle += `: ${id}`;
-    this.product = {
-      productId: id,
-      productName: 'Pad XBOX ONE',
-      productCode: 'GMG-0042',
-      releaseDate: '15 Marca 2020',
-      // tslint:disable-next-line:max-line-length
-      description: 'Przeznaczenie: Xbox One, Xbox One S, Xbox One X.\nInterfejs Bezprzewodowy.\nZastosowane technologie Wi-Fi.\nZmienia kolor w zależności od kąta patrzenia z niebieskiego na fioletowy.\nZasilanie: 2 paluszki AA.',
-      price: 199.99,
-      starRating: 4.6,
-      imageUrl: 'assets/images/xbox-controller.jpg'
-    };
+    const param = this.route.snapshot.paramMap.get('id');
+    if (param) {
+      const id = +param;
+      this.getProduct(id);
+    }
+  }
+
+  getProduct(id: number) {
+    this.productService.getProduct(id).subscribe({
+      next: product => this.product = product,
+      error: err => this.errorMessage = err
+    });
   }
 
   onBack(): void {
     this.router.navigate(['/products']);
   }
-
 }
