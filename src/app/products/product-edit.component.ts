@@ -46,6 +46,10 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       starRating: {
         range: 'Oceń produkt od 1.00 (najniższa ocena) do 5.00 (najwyższa ocena).'
+      },
+      price: {
+        required: 'Cena produktu jest wymagana.',
+        range: 'Cena produktu nie może być ujemna.'
       }
     };
 
@@ -61,6 +65,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
         Validators.maxLength(50)]],
       productCode: ['', Validators.required],
       starRating: ['', NumberValidators.range(1, 5)],
+      price: ['', [Validators.required, NumberValidators.range(0, 1000000000)]],
       tags: this.fb.array([]),
       description: ''
     });
@@ -120,6 +125,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.productForm.patchValue({
       productName: this.product.productName,
       productCode: this.product.productCode,
+      price: this.product.price,
       starRating: this.product.starRating,
       description: this.product.description
     });

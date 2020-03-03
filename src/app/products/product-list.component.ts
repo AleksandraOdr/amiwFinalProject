@@ -10,19 +10,20 @@ import {ProductService} from './product.service';
 export class ProductListComponent implements OnInit {
   pageTitle = 'Lista Produktów';
   imageWidth = 100;
+  imageHeight = 80;
   imageMargin = 2;
   showImage = false;
   filteredProducts: IProduct[];
   products: IProduct[] = [];
   errorMessage: string;
 
-  _listFilter: string;
+  listFilters: string;
   get listFilter(): string {
-    return this._listFilter;
+    return this.listFilters;
   }
 
   set listFilter(value) {
-    this._listFilter = value;
+    this.listFilters = value;
     this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
   }
 
@@ -46,7 +47,7 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.productService.getProducts().subscribe({
       next: products => {
-        this.products = products
+        this.products = products;
         this.filteredProducts = this.products;
       },
       error: err => this.errorMessage = err

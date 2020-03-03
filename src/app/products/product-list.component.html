@@ -41,6 +41,7 @@
                  [src]="product.imageUrl"
                  [title]="product.productName"
                  [style.width.px]="imageWidth"
+                 [style.height.px]="imageHeight"
                  [style.margin.px]="imageMargin" >
           </td>
           <td><a [routerLink]="['/products', product.id]">
